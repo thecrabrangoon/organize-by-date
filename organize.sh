@@ -62,14 +62,14 @@ echo "Source: ${source_dir}, Target: ${target_dir}, Filter: ${filter}"
 
 cd "${source_dir}"
 
-regex="^(\d{4})(\d{2})(\d{2})_\d{6}.jpg$"
+regex=^(\d{4})(\d{2})(\d{2})_\d{6}.jpg$
 
 for file in *; do    
     if [ ! -f "${file}" ]; then
         continue
     fi
 
-    [[ $file =~ $regex ]]
+    [[ ${file} =~ ${regex} ]]
 
     year="${BASH_REMATCH[1]}"
     month="${BASH_REMATCH[2]}"
