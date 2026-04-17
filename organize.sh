@@ -62,7 +62,7 @@ echo "Source: ${source_dir}, Target: ${target_dir}, Filter: ${filter}"
 
 cd "${source_dir}"
 
-regex="^(\d{4})(\d{2})(\d{2})_\d{6}\.jpg$"
+regex="^([0-9]{4})([0-9]{2})([0-9]{2})_[0-9]{6}\.jpg$"
 
 for file in *; do    
     if [ ! -f "${file}" ]; then
