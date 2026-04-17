@@ -23,7 +23,8 @@ show_version() {
 }
 
 echo "Organized by Date"
-echo "https://github.com/YakDriver/organize-by-date"
+echo "https://github.com/tehcrabrangoon/organize-by-date"
+echo "Forked off https://github.com/YakDriver/organize-by-date"
 echo "---------------------------------------------"
 while [ "$1" != "" ]; do
   case $1 in
@@ -66,20 +67,15 @@ for file in *; do
         continue
     fi
 
-    year=$(stat -f "%SB" -t "%Y" "${file}")
-    month=$(stat -f "%SB" -t "%m" "${file}")
-    day=$(stat -f "%SB" -t "%d" "${file}")
-    next_day=$(date +%Y-%m-%d -d "${year}-${month}-${day} + 1 day" 2>/dev/null)
+    regex="^(\d{4})(\d{2})(\d{2})_\d{6}.jpg$"
 
-    if [ "${next_day}" = "" ]; then
-        next_day=`date -v+1d -jf"%Y-%m-%d" ${year}-${month}-${day} +%Y-%m-%d`
-    fi
+    year="${BASH_REMATCH[1]}"
+    month="${BASH_REMATCH[2]}"
+    day="${BASH_REMATCH[3]}"
 
-    if [ ! -d "${target_dir}/${year}" ]; then
-        mkdir "${target_dir}/${year}"
-    fi
+    formatted_date="${month}.${day}.${year}"
+    dest="${target_dir}/${formatted_date}"
 
-    dest="${target_dir}/${year}/${year}-${month}-${day}"
     if [ ! -d "${dest}" ]; then
         mkdir "${dest}"
     fi
@@ -89,9 +85,9 @@ for file in *; do
     fi
 
     if [ "${copy}" -eq "0" ]; then
-        find . -path "${dest}" -prune -o -type f -name "${filter}" -newerBt "${year}-${month}-${day}" ! -newerBt "${next_day}" -exec mv -n {} "${dest}" \;
+        find . -path "${dest}" -prune -o -type f -name "${filter}" -exec mv -n {} "${dest}" \;
     else    
-        find . -path "${dest}" -prune -o -type f -name "${filter}" -newerBt "${year}-${month}-${day}" ! -newerBt "${next_day}" -exec cp -p {} "${dest}" \;
+        find . -path "${dest}" -prune -o -type f -name "${filter}" -exec cp -p {} "${dest}" \;
     fi
     
 done
