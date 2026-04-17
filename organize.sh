@@ -87,9 +87,9 @@ for file in *; do
     fi
 
     if [ "${copy}" -eq "0" ]; then
-        find . -path "${dest}" -prune -o -type f -name "${filter}" -exec mv -n {} "${dest}" \;
-    else    
-        find . -path "${dest}" -prune -o -type f -name "${filter}" -exec cp -p {} "${dest}" \;
+        mv -n ${file} "${dest}/${file}"
+    else
+        cp -p ${file} "${dest}/${file}"
     fi
     
 done
